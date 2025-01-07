@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
 import { CivilityEnum } from '../models/civility.enum';
 import { RoleEnum } from '../models/role.enum';
 
@@ -30,4 +30,11 @@ export class CreateUserAccountDto {
   @IsEnum(RoleEnum)
   @IsNotEmpty()
   role: RoleEnum;
+
+  @IsString()
+  verification_code: string;
+
+  @IsOptional()
+  @IsString()
+  num_rpps?: string;
 }

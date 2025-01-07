@@ -2,6 +2,9 @@ import { ConfigProps } from 'src/common/models/config.model';
 
 export const config = (): ConfigProps => ({
   port: parseInt(process.env.PORT, 10) || 3000,
+  devMode: process.env.devMode === 'true',
+  defaultClientPhoto: process.env.DEFAULT_CLIENT_PHOTO,
+  defaultVeterinarianPhoto: process.env.DEFAULT_VETERINARIAN_PHOTO,
   api: {
     frontUrl: process.env.FRONT_URL,
     httpTimeout: 1000,
@@ -39,7 +42,7 @@ export const config = (): ConfigProps => ({
     mailDev: process.env.MAIL_DEV,
     host: process.env.SMTP_MAILER,
     port: +process.env.SMTP_PORT!,
-    secure: false,
+    secure: process.env.SECURE_MAILER === 'true',
     auth: {
       user: process.env.USER_MAILER,
       pass: process.env.PASS_MAILER,

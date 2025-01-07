@@ -1,6 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Admin } from '../../admin/entities/admin.entity';
+import { Client } from '../../client/entities/client.entity';
+import { Veterinarian } from '../../veterinarian/entities/veterinarian.entity';
 import { CivilityEnum } from '../models/civility.enum';
-import { RoleEnum } from '../models/role.enum';
 
 @Entity('user_account', { schema: 'public' })
 export class UserAccount {
@@ -25,9 +27,6 @@ export class UserAccount {
   @Column('character varying')
   photo: string;
 
-  @Column('enum', { enum: RoleEnum })
-  role: string;
-
   @Column('boolean', { default: false })
   active: boolean;
 
@@ -39,4 +38,19 @@ export class UserAccount {
 
   @Column('timestamp', { default: 'NOW()', onUpdate: 'NOW()' })
   update_date: string;
+
+  @Column('character varying', { nullable: true })
+  verification_code: string;
+
+  @Column('timestamp', { default: 'NOW()', nullable: true })
+  verification_date: string;
+
+  @OneToOne(() => Client, (client) => client.userAccount)
+  client: Client;
+
+  @OneToOne(() => Admin, (admin) => admin.userAccount)
+  admin: Admin;
+
+  @OneToOne(() => Veterinarian, (veterinarian) => veterinarian.userAccount)
+  veterinarian: Veterinarian;
 }

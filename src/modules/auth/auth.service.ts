@@ -5,17 +5,20 @@ import { config } from 'src/config/config';
 import { UserAccount } from '../user_account/entities/user_account.entity';
 import { CivilityEnum } from '../user_account/models/civility.enum';
 import { RoleEnum } from '../user_account/models/role.enum';
+import { UserAccountQueryResponse } from '../user_account/models/userAccountQueryResponse.model';
 import { UserAccountService } from '../user_account/user_account.service';
+import { MailService } from './../../common/services/mail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userAccountService: UserAccountService,
     private jwtService: JwtService,
+    private mailService: MailService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<Partial<UserAccount> | { message: string }> {
-    const user = await this.userAccountService.findForLogin(email);
+  async validateUser(email: string, password: string): Promise<Partial<UserAccount>> {
+    const user: UserAccountQueryResponse.UserAccountWithRole = await this.userAccountService.findForLogin(email);
 
     if (user) {
       const isMatch = await bcrypt.compare(password, user.password);
@@ -28,8 +31,8 @@ export class AuthService {
     return null;
   }
 
-  async login(user: Partial<UserAccount>): Promise<{ access_token: string }> {
-    const payload = {
+  async login(user: Partial<UserAccount> & { role: RoleEnum }): Promise<{ access_token: string }> {
+    const payload: Partial<UserAccount> & { role: RoleEnum } = {
       id: user.id,
       email: user.email,
       first_name: user.first_name,
@@ -46,16 +49,15 @@ export class AuthService {
     };
   }
 
-  async register(
+  async registerClient(
     email: string,
     first_name: string,
     last_name: string,
     civility: CivilityEnum,
     password: string,
     photo: string,
-    role: RoleEnum,
   ): Promise<{ message: string }> {
-    if (!email || !first_name || !last_name || !civility || !password || !photo || !role) {
+    if (!email || !first_name || !last_name || !civility || !password || !photo) {
       throw new Error('Missing required fields');
     }
 
@@ -63,21 +65,55 @@ export class AuthService {
       throw new Error('Email already used');
     }
 
-    if (role === RoleEnum['ADMIN']) {
-      throw new Error('You cannot create an admin account');
-    }
-
     const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt());
+    const verification_code = Math.floor(100000 + Math.random() * 900000).toString();
 
-    const newUser = this.userAccountService.create({
+    this.userAccountService.create({
       email,
       password: hashedPassword,
       first_name,
       last_name,
       civility,
       photo,
-      role,
+      role: RoleEnum['client'],
+      verification_code,
     });
-    return { message: 'User created' };
+    this.mailService.confirmEmail(email, verification_code);
+    return { message: 'Client created' };
+  }
+
+  async registerVeterinarian(
+    email: string,
+    first_name: string,
+    last_name: string,
+    civility: CivilityEnum,
+    password: string,
+    photo: string,
+    num_rpps: string,
+  ) {
+    if (!email || !first_name || !last_name || !civility || !password || !photo || !num_rpps) {
+      throw new Error('Missing required fields');
+    }
+
+    if (await this.userAccountService.findByEmail(email)) {
+      throw new Error('Email already used');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt());
+    const verification_code = Math.floor(100000 + Math.random() * 900000).toString();
+
+    this.userAccountService.create({
+      email,
+      password: hashedPassword,
+      first_name,
+      last_name,
+      civility,
+      photo,
+      role: RoleEnum['veterinarian'],
+      num_rpps,
+      verification_code,
+    });
+    this.mailService.confirmEmail(email, verification_code);
+    return { message: 'Veterinarian created' };
   }
 }

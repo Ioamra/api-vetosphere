@@ -6,8 +6,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonModule } from './common/common.module';
 import { IsConnectedGuard } from './common/guards/is-connected.guard';
 import { config } from './config/config';
+import { AdminModule } from './modules/admin/admin.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { ClientModule } from './modules/client/client.module';
 import { UserAccountModule } from './modules/user_account/user_account.module';
+import { VeterinarianModule } from './modules/veterinarian/veterinarian.module';
 
 @Module({
   imports: [
@@ -50,6 +53,9 @@ import { UserAccountModule } from './modules/user_account/user_account.module';
     CommonModule,
     AuthModule,
     UserAccountModule,
+    ClientModule,
+    AdminModule,
+    VeterinarianModule,
   ],
   providers: [
     {

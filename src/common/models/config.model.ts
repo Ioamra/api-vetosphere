@@ -1,5 +1,8 @@
 export interface ConfigProps {
   port: number;
+  devMode: boolean;
+  defaultClientPhoto: string;
+  defaultVeterinarianPhoto: string;
   api: ApiConfigProps;
   salt: string;
   database: DatabaseConfigProps;
