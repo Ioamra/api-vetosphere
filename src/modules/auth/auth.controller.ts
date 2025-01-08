@@ -28,7 +28,9 @@ export class AuthController {
   }
 
   @Post('register-client')
-  async register(@Body() user: { email: string; first_name: string; last_name: string; civility: CivilityEnum; password: string; photo?: string }) {
+  async registerClient(
+    @Body() user: { email: string; first_name: string; last_name: string; civility: CivilityEnum; password: string; photo?: string },
+  ) {
     if (!user.photo) {
       user.photo = config().defaultClientPhoto;
     }
