@@ -3,6 +3,7 @@ export interface ConfigProps {
   devMode: boolean;
   defaultClientPhoto: string;
   defaultVeterinarianPhoto: string;
+  generatePostmanCollection: boolean;
   api: ApiConfigProps;
   salt: string;
   database: DatabaseConfigProps;

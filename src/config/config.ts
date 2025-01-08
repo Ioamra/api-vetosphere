@@ -5,6 +5,7 @@ export const config = (): ConfigProps => ({
   devMode: process.env.devMode === 'true',
   defaultClientPhoto: process.env.DEFAULT_CLIENT_PHOTO,
   defaultVeterinarianPhoto: process.env.DEFAULT_VETERINARIAN_PHOTO,
+  generatePostmanCollection: process.env.GENERATE_POSTMAN_COLLECTION === 'true',
   api: {
     frontUrl: process.env.FRONT_URL,
     httpTimeout: 1000,
