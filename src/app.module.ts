@@ -16,6 +16,7 @@ import { DocumentModule } from './modules/document/document.module';
 import { SpecieModule } from './modules/specie/specie.module';
 import { RaceModule } from './modules/race/race.module';
 import { VaccineModule } from './modules/vaccine/vaccine.module';
+import { SpecieHasVaccineModule } from './modules/specie_has_vaccine/specie_has_vaccine.module';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { VaccineModule } from './modules/vaccine/vaccine.module';
     SpecieModule,
     RaceModule,
     VaccineModule,
+    SpecieHasVaccineModule,
   ],
   providers: [
     {
