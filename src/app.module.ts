@@ -14,6 +14,7 @@ import { VeterinarianModule } from './modules/veterinarian/veterinarian.module';
 import { AnimalModule } from './modules/animal/animal.module';
 import { DocumentModule } from './modules/document/document.module';
 import { SpecieModule } from './modules/specie/specie.module';
+import { RaceModule } from './modules/race/race.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { SpecieModule } from './modules/specie/specie.module';
     AnimalModule,
     DocumentModule,
     SpecieModule,
+    RaceModule,
   ],
   providers: [
     {
