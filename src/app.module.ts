@@ -11,6 +11,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ClientModule } from './modules/client/client.module';
 import { UserAccountModule } from './modules/user_account/user_account.module';
 import { VeterinarianModule } from './modules/veterinarian/veterinarian.module';
+import { AnimalModule } from './modules/animal/animal.module';
+import { DocumentModule } from './modules/document/document.module';
 
 @Module({
   imports: [
@@ -56,6 +58,8 @@ import { VeterinarianModule } from './modules/veterinarian/veterinarian.module';
     ClientModule,
     AdminModule,
     VeterinarianModule,
+    AnimalModule,
+    DocumentModule,
   ],
   providers: [
     {
