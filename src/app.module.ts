@@ -13,6 +13,7 @@ import { UserAccountModule } from './modules/user_account/user_account.module';
 import { VeterinarianModule } from './modules/veterinarian/veterinarian.module';
 import { AnimalModule } from './modules/animal/animal.module';
 import { DocumentModule } from './modules/document/document.module';
+import { SpecieModule } from './modules/specie/specie.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { DocumentModule } from './modules/document/document.module';
     VeterinarianModule,
     AnimalModule,
     DocumentModule,
+    SpecieModule,
   ],
   providers: [
     {
