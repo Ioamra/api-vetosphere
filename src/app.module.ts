@@ -21,6 +21,7 @@ import { VaccinationModule } from './modules/vaccination/vaccination.module';
 import { EventTypeModule } from './modules/event_type/event_type.module';
 import { EventModule } from './modules/event/event.module';
 import { AnimalHistoryModule } from './modules/animal_history/animal_history.module';
+import { WorkingSectionModule } from './modules/working_section/working_section.module';
 
 @Module({
   imports: [
@@ -76,6 +77,7 @@ import { AnimalHistoryModule } from './modules/animal_history/animal_history.mod
     EventTypeModule,
     EventModule,
     AnimalHistoryModule,
+    WorkingSectionModule,
   ],
   providers: [
     {
