@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Cart } from '../../cart/entities/cart.entity';
 import { DeliveryEnum } from './models/delivery.enum';
 
 @Entity('deliverystage', { schema: 'public' })
@@ -6,12 +7,13 @@ export class DeliveryStage {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('timestamp')
-  stage: string;
-
-  @Column('timestamp', { default: 'NOW()' })
-  creation_date: string;
-
   @Column('enum', { enum: DeliveryEnum })
-  deliveryEnum: DeliveryEnum;
+  stage: DeliveryEnum;
+
+  @Column('timestamp', { default: () => 'NOW()' })
+  creation_date: Date;
+
+  @ManyToOne(() => Cart, (Cart) => Cart.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'id_cart' })
+  Cart?: Cart;
 }
