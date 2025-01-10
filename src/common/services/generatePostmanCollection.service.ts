@@ -25,7 +25,7 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
     ],
   };
 
-  async onApplicationBootstrap() {
+  async onApplicationBootstrap(): Promise<void> {
     this.generatePostManJsonCollectionFile(config().generatePostmanCollection);
   }
 
@@ -40,7 +40,7 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
     filePaths.forEach((filePath) => {
       const sourceCode = fs.readFileSync(filePath, 'utf-8');
       const sourceFile = ts.createSourceFile(filePath, sourceCode, ts.ScriptTarget.Latest, true);
-      let obj: FolderItemPM = { name: '', item: [], description: undefined };
+      const obj: FolderItemPM = { name: '', item: [], description: undefined };
 
       const extractInfosTSFile = (node: ts.Node): void => {
         if (ts.isClassDeclaration(node) && node.name) {
@@ -96,7 +96,7 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
 
               if (httpMethod) {
                 obj.name = className.replace('Controller', '');
-                let descriptonObject = this.getTypesBodies(this.arrayOfSpec, obj.name);
+                const descriptonObject = this.getTypesBodies(this.arrayOfSpec, obj.name);
                 if (descriptonObject) {
                   obj.description = 'Description des routes : \n' + descriptonObject;
                 }
@@ -208,7 +208,7 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
    * @param dirName Chemin du répertoire à scanner (par défaut, le répertoire src)
    * @returns Tableau contenant les chemins des fichiers trouvés
    */
-  private getAllFilesPathsWithExtension(extension: string, dir: string = path.join(__dirname, '..', '..', '..', 'src')): string[] {
+  private getAllFilesPathsWithExtension(extension: string, dir: string = path.join(__dirname, '..', '..', '..')): string[] {
     let results: string[] = [];
     const contentDirectory = fs.readdirSync(dir);
 
@@ -255,7 +255,7 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
       const ObjectPostMan: ObjectPostMan = this.generatePostManObject(filePaths);
       const object = this.organizationOfItems(ObjectPostMan);
       const objectJson = JSON.stringify(object, null, 2);
-      const savePath = path.join(__dirname, '..', '..', '..', 'src', 'postman-collection', 'postmanCollection.json');
+      const savePath = path.join(__dirname, '..', '..', '..', 'postman-collection', 'postmanCollection.json');
       fs.writeFile(savePath, objectJson, 'utf-8', (err) => {
         if (err) {
           Logger.error(err);
@@ -288,7 +288,7 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
     this.getAllFilesPathsWithExtension('.dto.ts').forEach((filePath) => {
       const sourceCode = fs.readFileSync(filePath, 'utf-8');
       const sourceFile = ts.createSourceFile(filePath, sourceCode, ts.ScriptTarget.Latest, true);
-      let interfaceDto: any = {};
+      const interfaceDto: any = {};
       const extractInfosTSFile = (node: ts.Node): void => {
         if (ts.isClassDeclaration(node) && node.name) {
           const className = node.name.text;
@@ -335,7 +335,7 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
       const sourceFile = ts.createSourceFile(filePath, sourceCode, ts.ScriptTarget.Latest, true);
       let obj = { describe: '', it: '' };
       let result: string = '';
-      const findTestBlocks = (node: ts.Node) => {
+      const findTestBlocks = (node: ts.Node): void => {
         if (ts.isCallExpression(node)) {
           const expression = node.expression;
           if (ts.isIdentifier(expression)) {
@@ -356,7 +356,7 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
         ts.forEachChild(node, (childNode) => findTestBlocks(childNode));
       };
       findTestBlocks(sourceFile);
-      let resultObject = {};
+      const resultObject = {};
       const nameResultObject = result.split(' ')[2].replace('Controller', '');
       resultObject[nameResultObject] = result.replace(`La route ${nameResultObject}Controller should be defined. \n`, '');
       this.arrayOfSpec.push(resultObject);
