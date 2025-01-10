@@ -1,27 +1,24 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserAccount } from '../../user_account/entities/user_account.entity';
 
-@Entity('blog', { schema: 'public' })
-export class Blog {
+@Entity('adresse', { schema: 'public' })
+export class Address {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column('character varying')
-  title: string;
+  adress: string;
 
   @Column('character varying')
-  content: string;
+  adress_complement: string;
 
   @Column('character varying')
-  photo: string;
+  city: string;
 
-  @Column('timestamp', { default: 'NOW()' })
-  creation_date: string;
-
-  @Column('timestamp', { default: 'NOW()', onUpdate: 'NOW()' })
-  update_date: string;
+  @Column('character varying')
+  postal_code: string;
 
   @ManyToOne(() => UserAccount, (UserAccount) => UserAccount.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_user_account' })
-  UserAccount?: UserAccount;
+  user_account?: UserAccount;
 }

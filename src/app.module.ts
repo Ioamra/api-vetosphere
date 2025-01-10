@@ -23,6 +23,8 @@ import { EventModule } from './modules/event/event.module';
 import { AnimalHistoryModule } from './modules/animal_history/animal_history.module';
 import { WorkingSectionModule } from './modules/working_section/working_section.module';
 import { BlogModule } from './modules/blog/blog.module';
+import { BlogMessageModule } from './modules/blog_message/blog_message.module';
+import { AddressModule } from './modules/address/address.module';
 
 @Module({
   imports: [
@@ -80,6 +82,8 @@ import { BlogModule } from './modules/blog/blog.module';
     AnimalHistoryModule,
     WorkingSectionModule,
     BlogModule,
+    BlogMessageModule,
+    AddressModule,
   ],
   providers: [
     {
