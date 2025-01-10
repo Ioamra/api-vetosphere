@@ -28,6 +28,8 @@ import { AddressModule } from './modules/address/address.module';
 import { ProductModule } from './modules/product/product.module';
 import { CategoryModule } from './modules/category/category.module';
 import { PhotoModule } from './modules/photo/photo.module';
+import { CartModule } from './modules/cart/cart.module';
+import { DeliveryStageModule } from './modules/delivery_stage/delivery_stage.module';
 
 @Module({
   imports: [
@@ -90,6 +92,8 @@ import { PhotoModule } from './modules/photo/photo.module';
     ProductModule,
     CategoryModule,
     PhotoModule,
+    CartModule,
+    DeliveryStageModule,
   ],
   providers: [
     {
