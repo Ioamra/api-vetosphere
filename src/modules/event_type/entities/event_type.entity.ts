@@ -12,8 +12,8 @@ export class EventType {
   @Column('character varying')
   color: string;
 
-  @Column('character varying')
-  default_duration: string;
+  @Column('int')
+  default_duration: number;
 
   @ManyToOne(() => UserAccount, (UserAccount) => UserAccount.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_user_account' })
