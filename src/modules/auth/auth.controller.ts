@@ -30,7 +30,7 @@ export class AuthController {
   @Post('register-client')
   async registerClient(
     @Body() user: { email: string; first_name: string; last_name: string; civility: CivilityEnum; password: string; photo?: string },
-  ) {
+  ): Promise<{ message: string }> {
     if (!user.photo) {
       user.photo = config().defaultClientPhoto;
     }
@@ -49,7 +49,7 @@ export class AuthController {
       photo?: string;
       num_rpps: string;
     },
-  ) {
+  ): Promise<{ message: string }> {
     if (!user.photo) {
       user.photo = config().defaultVeterinarianPhoto;
     }
@@ -65,7 +65,7 @@ export class AuthController {
   }
 
   @Get('confirm-code/:email/:verification_code')
-  async confirmCode(@Request() req) {
+  async confirmCode(@Request() req): Promise<boolean> {
     const { email, verification_code } = req.params;
     return await this.userAccountService.verificationCodeIsValid(email, verification_code);
   }
