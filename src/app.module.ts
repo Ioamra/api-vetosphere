@@ -30,6 +30,8 @@ import { CategoryModule } from './modules/category/category.module';
 import { PhotoModule } from './modules/photo/photo.module';
 import { CartModule } from './modules/cart/cart.module';
 import { DeliveryStageModule } from './modules/delivery_stage/delivery_stage.module';
+import { CartHasProductModule } from './modules/cart_has_product/cart_has_product.module';
+import { FavoriteModule } from './modules/favorite/favorite.module';
 
 @Module({
   imports: [
@@ -94,6 +96,8 @@ import { DeliveryStageModule } from './modules/delivery_stage/delivery_stage.mod
     PhotoModule,
     CartModule,
     DeliveryStageModule,
+    CartHasProductModule,
+    FavoriteModule,
   ],
   providers: [
     {
