@@ -1,4 +1,4 @@
-export type IConfigProps = {
+export type ConfigProps = {
   port: number;
   devMode: boolean;
   defaultClientPhoto: string;
