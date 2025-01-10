@@ -29,11 +29,8 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
     this.generatePostManJsonCollectionFile(config().generatePostmanCollection);
   }
 
-  /**
-   * @description Analyse les fichiers .ts et récupère les informations nécessaires pour générer le fichier de collection Postman
-   * @param filePaths Chemins des fichiers .ts à analyser
-   * @returns Objet de la structure de Postman
-   */
+  // Analyse les fichiers .ts et récupère les informations nécessaires pour générer le fichier de collection Postman
+  // filePaths correspond aux chemins des fichiers .ts à analyser
   private generatePostManObject(filePaths: string[]): ObjectPostMan {
     this.getAllDto();
     this.getDescribeSpec();
@@ -202,12 +199,8 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
     });
     return this.collectionJson;
   }
-  /**
-   * @description Récupère tous les chemins des fichiers d'un répertoire avec une extension donnée
-   * @param extension Extension des fichiers à rechercher
-   * @param dirName Chemin du répertoire à scanner (par défaut, le répertoire src)
-   * @returns Tableau contenant les chemins des fichiers trouvés
-   */
+
+  // Récupère tous les chemins des fichiers d'un répertoire avec une extension donnée
   private getAllFilesPathsWithExtension(extension: string, dir: string = path.join(__dirname, '..', '..', '..')): string[] {
     let results: string[] = [];
     const contentDirectory = fs.readdirSync(dir);
@@ -225,11 +218,8 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
 
     return results;
   }
-  /**
-   * @description Organise les items de l'objet de la structure de Postman
-   * @param object Objet de la structure de Postman à organiser
-   * @returns Objet de la structure de Postman organisé
-   */
+
+  // Organise les items de l'objet de la structure de Postman
   private organizationOfItems(object: ObjectPostMan): ObjectPostMan {
     object.item = object.item.filter((elem) => elem.name !== '' || elem.item.length > 0);
     object.item.sort((a, b) => {
@@ -246,9 +236,7 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
     return object;
   }
 
-  /**
-   * @description Génère le fichier de collection Postman
-   */
+  // Génère le fichier de collection Postman
   public generatePostManJsonCollectionFile(activate: boolean = false): void {
     if (activate) {
       const filePaths: string[] = this.getAllFilesPathsWithExtension('.controller.ts');
@@ -280,9 +268,7 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
     }
   }
 
-  /**
-   * @description Récupère les informations des fichiers .dto.ts
-   */
+  // Récupère les informations des fichiers .dto.ts
   private getAllDto(): void {
     this.arrayOfDto = [];
     this.getAllFilesPathsWithExtension('.dto.ts').forEach((filePath) => {
@@ -318,17 +304,13 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
     });
   }
 
-  /**
-   * @description Récupère le contenu d'un type donné [ { type: value } ]
-   */
+  // Récupère le contenu d'un type donné [ { type: value } ]
   private getTypesBodies(array: any[], typeName: string): any | undefined {
     const foundObject = array.find((item) => item[typeName] !== undefined);
     return foundObject ? foundObject[typeName] : undefined;
   }
 
-  /**
-   * @description Récupère les informations des fichiers .controller.spec.ts
-   */
+  // Récupère les informations des fichiers .controller.spec.ts
   private getDescribeSpec(): void {
     this.getAllFilesPathsWithExtension('.controller.spec.ts').forEach((filePath) => {
       const sourceCode = fs.readFileSync(filePath, 'utf-8');
