@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 't
 import { Cart } from '../../cart/entities/cart.entity';
 import { DeliveryEnum } from './models/delivery.enum';
 
-@Entity('deliverystage', { schema: 'public' })
+@Entity('delivery_stage', { schema: 'public' })
 export class DeliveryStage {
   @PrimaryGeneratedColumn()
   id: number;
@@ -13,7 +13,7 @@ export class DeliveryStage {
   @Column('timestamp', { default: () => 'NOW()' })
   creation_date: Date;
 
-  @ManyToOne(() => Cart, (Cart) => Cart.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => Cart, (cart) => cart.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_cart' })
-  Cart?: Cart;
+  cart?: Cart;
 }

@@ -15,11 +15,11 @@ export class Product {
   @Column('character varying')
   description: string;
 
-  @ManyToOne(() => Specie, (Specie) => Specie.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => Specie, (specie) => specie.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_specie' })
   specie?: Specie;
 
-  @ManyToOne(() => category, (Category) => Category.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => category, (category) => category.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_category' })
   category?: category;
 }
