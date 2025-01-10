@@ -17,18 +17,18 @@ export class Event {
   @Column('character varying')
   description: string;
 
-  @Column('boolan')
+  @Column('boolean')
   is_delete: boolean;
 
   @ManyToOne(() => EventType, (EventType) => EventType.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_event_type' })
-  EventType?: EventType;
+  eventType?: EventType;
 
   @ManyToOne(() => Animal, (Animal) => Animal.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_animal' })
-  Animal?: Animal;
+  animal?: Animal;
 
   @ManyToOne(() => Veterinarian, (Veterinarian) => Veterinarian.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_veterinarian' })
-  Veterinarian?: Veterinarian;
+  veterinarian?: Veterinarian;
 }

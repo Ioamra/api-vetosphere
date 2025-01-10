@@ -16,13 +16,13 @@ export class Vaccination {
 
   @ManyToOne(() => Vaccine, (Vaccine) => Vaccine.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_vaccine' })
-  Vaccine?: Vaccine;
+  vaccine?: Vaccine;
 
   @ManyToOne(() => Animal, (Animal) => Animal.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_animal' })
-  Animal?: Animal;
+  animal?: Animal;
 
   @ManyToOne(() => Veterinarian, (Veterinarian) => Veterinarian.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  @JoinColumn({ name: 'id_animal' })
-  Veterinarian?: Veterinarian;
+  @JoinColumn({ name: 'id_veterinarian' })
+  veterinarian?: Veterinarian;
 }

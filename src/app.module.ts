@@ -20,6 +20,7 @@ import { SpecieHasVaccineModule } from './modules/specie_has_vaccine/specie_has_
 import { VaccinationModule } from './modules/vaccination/vaccination.module';
 import { EventTypeModule } from './modules/event_type/event_type.module';
 import { EventModule } from './modules/event/event.module';
+import { AnimalHistoryModule } from './modules/animal_history/animal_history.module';
 
 @Module({
   imports: [
@@ -74,6 +75,7 @@ import { EventModule } from './modules/event/event.module';
     VaccinationModule,
     EventTypeModule,
     EventModule,
+    AnimalHistoryModule,
   ],
   providers: [
     {
