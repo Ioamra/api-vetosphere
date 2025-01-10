@@ -22,6 +22,9 @@ export class Animal {
   num_chip: string;
 
   @Column('character varying')
+  tatto: string;
+
+  @Column('character varying')
   photo: string;
 
   @Column('int')
