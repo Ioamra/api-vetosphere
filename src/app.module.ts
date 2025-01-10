@@ -25,6 +25,9 @@ import { WorkingSectionModule } from './modules/working_section/working_section.
 import { BlogModule } from './modules/blog/blog.module';
 import { BlogMessageModule } from './modules/blog_message/blog_message.module';
 import { AddressModule } from './modules/address/address.module';
+import { ProductModule } from './modules/product/product.module';
+import { CategoryModule } from './modules/category/category.module';
+import { PhotoModule } from './modules/photo/photo.module';
 
 @Module({
   imports: [
@@ -84,6 +87,9 @@ import { AddressModule } from './modules/address/address.module';
     BlogModule,
     BlogMessageModule,
     AddressModule,
+    ProductModule,
+    CategoryModule,
+    PhotoModule,
   ],
   providers: [
     {
