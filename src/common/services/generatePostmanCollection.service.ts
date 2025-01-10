@@ -30,7 +30,6 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
   }
 
   // Analyse les fichiers .ts et récupère les informations nécessaires pour générer le fichier de collection Postman
-  // filePaths correspond aux chemins des fichiers .ts à analyser
   private generatePostManObject(filePaths: string[]): ObjectPostMan {
     this.getAllDto();
     this.getDescribeSpec();
