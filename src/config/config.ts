@@ -3,6 +3,7 @@ import { ConfigProps } from 'src/common/models/config.model';
 export const config = (): ConfigProps => ({
   port: parseInt(process.env.PORT, 10) || 3000,
   devMode: process.env.DEV_MODE === 'true',
+  debugMode: process.env.DEBUG_MODE === 'true',
   defaultClientPhoto: process.env.DEFAULT_CLIENT_PHOTO,
   defaultVeterinarianPhoto: process.env.DEFAULT_VETERINARIAN_PHOTO,
   generatePostmanCollection: process.env.GENERATE_POSTMAN_COLLECTION === 'true',

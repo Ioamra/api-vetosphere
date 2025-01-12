@@ -54,31 +54,20 @@ export class AuthService {
     last_name: string,
     civility: CivilityEnum,
     password: string,
-    photo: string,
-  ): Promise<{ message: string }> {
-    if (!email || !first_name || !last_name || !civility || !password || !photo) {
-      throw new Error('Missing required fields');
-    }
-
-    if (await this.userAccountService.findByEmail(email)) {
-      throw new Error('Email already used');
-    }
-
+  ): Promise<{ id_user_account: number; verification_code: string }> {
     const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt());
     const verification_code = Math.floor(100000 + Math.random() * 900000).toString();
-
-    this.userAccountService.create({
+    const client = await this.userAccountService.create({
       email,
       password: hashedPassword,
       first_name,
       last_name,
       civility,
-      photo,
       role: RoleEnum['client'],
       verification_code,
+      photo: config().defaultClientPhoto,
     });
-    this.mailService.confirmEmail(email, verification_code);
-    return { message: 'Client created' };
+    return { id_user_account: client.id_user_account, verification_code };
   }
 
   async registerVeterinarian(
@@ -87,32 +76,22 @@ export class AuthService {
     last_name: string,
     civility: CivilityEnum,
     password: string,
-    photo: string,
     num_rpps: string,
-  ) {
-    if (!email || !first_name || !last_name || !civility || !password || !photo || !num_rpps) {
-      throw new Error('Missing required fields');
-    }
-
-    if (await this.userAccountService.findByEmail(email)) {
-      throw new Error('Email already used');
-    }
-
+  ): Promise<{ id_user_account: number; verification_code: string }> {
     const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt());
     const verification_code = Math.floor(100000 + Math.random() * 900000).toString();
 
-    this.userAccountService.create({
+    const veterinarian = await this.userAccountService.create({
       email,
       password: hashedPassword,
       first_name,
       last_name,
       civility,
-      photo,
       role: RoleEnum['veterinarian'],
       num_rpps,
       verification_code,
+      photo: config().defaultVeterinarianPhoto,
     });
-    this.mailService.confirmEmail(email, verification_code);
-    return { message: 'Veterinarian created' };
+    return { id_user_account: veterinarian.id_user_account, verification_code };
   }
 }

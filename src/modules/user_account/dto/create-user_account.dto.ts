@@ -24,17 +24,19 @@ export class CreateUserAccountDto {
   @IsNotEmpty()
   civility: CivilityEnum;
 
-  @IsString()
-  photo: string;
-
   @IsEnum(RoleEnum)
   @IsNotEmpty()
   role: RoleEnum;
 
   @IsString()
+  @IsNotEmpty()
   verification_code: string;
 
   @IsOptional()
   @IsString()
   num_rpps?: string;
+
+  @IsOptional()
+  @IsString()
+  photo?: string;
 }

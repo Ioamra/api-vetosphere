@@ -1,6 +1,7 @@
 export type ConfigProps = {
   port: number;
   devMode: boolean;
+  debugMode: boolean;
   defaultClientPhoto: string;
   defaultVeterinarianPhoto: string;
   generatePostmanCollection: boolean;

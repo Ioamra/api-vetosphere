@@ -1,5 +1,8 @@
+import { MemoryStorageFile } from '@blazity/nest-file-fastify';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as fs from 'fs';
+import * as path from 'path';
 import { Repository } from 'typeorm';
 import { AdminService } from '../admin/admin.service';
 import { VeterinarianService } from '../veterinarian/veterinarian.service';
@@ -69,6 +72,13 @@ export class UserAccountService {
 
   findOne(id: number) {
     return `This action returns a #${id} userAccount`;
+  }
+
+  updatePhoto(id: number, role: RoleEnum, photo: MemoryStorageFile) {
+    const ext = photo.mimetype.split('/')[1];
+    const uploadPath = path.join(__dirname, `../../../upload/${role}`, `${id}.${ext}`);
+    fs.writeFileSync(uploadPath, photo.buffer);
+    return this.userAccountRepository.update(id, { photo: `${id}.${ext}` });
   }
 
   update(id: number, updateUserAccountDto: UpdateUserAccountDto) {
