@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { CommonController } from './common.controller';
-import { GeneratePostManCollectionService } from './services/generatePostmanCollection.service';
+import { GeneratePostManCollectionService } from './services/generate-postman-collection.service';
 import { MailService } from './services/mail.service';
 
 @Global()

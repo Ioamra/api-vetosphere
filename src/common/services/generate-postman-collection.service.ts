@@ -242,7 +242,7 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
       const ObjectPostMan: ObjectPostMan = this.generatePostManObject(filePaths);
       const object = this.organizationOfItems(ObjectPostMan);
       const objectJson = JSON.stringify(object, null, 2);
-      const savePath = path.join(__dirname, '..', '..', '..', 'postman-collection', 'postmanCollection.json');
+      const savePath = path.join(__dirname, '..', '..', '..', 'postman-collection', 'postman-collection.json');
       fs.writeFile(savePath, objectJson, 'utf-8', (err) => {
         if (err) {
           Logger.error(err);
