@@ -57,6 +57,3 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Postman collection
 postman-collection.json
-
-# Looping
-Looping1.lo1
