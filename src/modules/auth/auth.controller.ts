@@ -41,6 +41,7 @@ export class AuthController {
     }
     const { id_user_account, verification_code } = await this.authService.registerClient(
       user.email,
+      user.phone,
       user.first_name,
       user.last_name,
       user.civility,
@@ -62,6 +63,7 @@ export class AuthController {
     }
     const { id_user_account, verification_code } = await this.authService.registerVeterinarian(
       user.email,
+      user.phone,
       user.first_name,
       user.last_name,
       user.civility,

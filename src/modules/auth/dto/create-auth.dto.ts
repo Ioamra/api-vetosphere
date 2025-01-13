@@ -8,6 +8,10 @@ export class CreateAuthDto {
 
   @IsString()
   @IsNotEmpty()
+  phone: string;
+
+  @IsString()
+  @IsNotEmpty()
   @Length(60)
   password: string;
 
