@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Repository } from 'typeorm';
-import { AdminService } from '../admin/admin.service';
+import { CustomCacheService } from '../../common/custom-cache/custom-cache.service';
 import { VeterinarianService } from '../veterinarian/veterinarian.service';
 import { ClientService } from './../client/client.service';
 import { CreateUserAccountDto } from './dto/create-user_account.dto';
@@ -20,12 +20,13 @@ export class UserAccountService {
     private readonly userAccountRepository: Repository<UserAccount>,
     private readonly clientService: ClientService,
     private readonly veterinarianService: VeterinarianService,
-    private readonly adminService: AdminService,
+    private readonly customCacheService: CustomCacheService,
   ) {}
 
   async create(createUserAccountDto: CreateUserAccountDto) {
     if (createUserAccountDto.role === RoleEnum['veterinarian']) {
       const veterinarian = await this.userAccountRepository.save(createUserAccountDto);
+      await this.customCacheService.delByPattern('user_account:*');
       return this.veterinarianService.create(veterinarian.id, createUserAccountDto.num_rpps);
     }
     const client = await this.userAccountRepository.save(createUserAccountDto);
@@ -33,6 +34,12 @@ export class UserAccountService {
   }
 
   async findForLogin(email: string): Promise<UserAccountQueryResponse.UserAccountWithRole | null> {
+    const cacheKey = `user_account:findForLogin(${email})`;
+    const cachedUser = await this.customCacheService.get<UserAccountQueryResponse.UserAccountWithRole>(cacheKey);
+    if (cachedUser) {
+      return cachedUser;
+    }
+
     const user = await this.userAccountRepository.findOne({
       where: { email, active: true },
       relations: ['client', 'admin', 'veterinarian'],
@@ -40,14 +47,19 @@ export class UserAccountService {
     if (!user) {
       return null;
     }
+    let userWithRole: UserAccountQueryResponse.UserAccountWithRole | null = null;
     if (user.client !== null) {
-      return { ...user, role: RoleEnum['client'] };
+      userWithRole = { ...user, role: RoleEnum['client'] };
     } else if (user.veterinarian !== null) {
-      return { ...user, role: RoleEnum['veterinarian'] };
+      userWithRole = { ...user, role: RoleEnum['veterinarian'] };
     } else if (user.admin !== null) {
-      return { ...user, role: RoleEnum['admin'] };
+      userWithRole = { ...user, role: RoleEnum['admin'] };
     }
-    return null;
+
+    if (userWithRole) {
+      await this.customCacheService.set(cacheKey, userWithRole);
+    }
+    return userWithRole;
   }
 
   async verificationCodeIsValid(email: string, verification_code: string) {
@@ -66,26 +78,36 @@ export class UserAccountService {
     return this.userAccountRepository.findOne({ where: { email } });
   }
 
-  findAll() {
-    return this.userAccountRepository.find();
+  async findAll() {
+    const cacheKey = `user_account:findAll`;
+    const cachedUser = await this.customCacheService.get<UserAccountQueryResponse.UserAccountWithRole>(cacheKey);
+    if (cachedUser) {
+      return cachedUser;
+    }
+    const res = await this.userAccountRepository.find();
+    await this.customCacheService.set(cacheKey, res);
+    return res;
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} userAccount`;
+    return this.userAccountRepository.findOne({ where: { id } });
   }
 
-  updatePhoto(id: number, role: RoleEnum, photo: MemoryStorageFile) {
+  async updatePhoto(id: number, role: RoleEnum, photo: MemoryStorageFile) {
     const ext = photo.mimetype.split('/')[1];
     const uploadPath = path.join(__dirname, `../../../upload/${role}`, `${id}.${ext}`);
     fs.writeFileSync(uploadPath, photo.buffer);
+    await this.customCacheService.del(`user_account:findAll`);
     return this.userAccountRepository.update(id, { photo: `${id}.${ext}` });
   }
 
-  update(id: number, updateUserAccountDto: UpdateUserAccountDto) {
-    return `This action updates a #${id} userAccount`;
+  async update(id: number, updateUserAccountDto: UpdateUserAccountDto) {
+    await this.customCacheService.delByPattern('user_account:*');
+    return this.userAccountRepository.update(id, updateUserAccountDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} userAccount`;
+  async remove(id: number) {
+    await this.customCacheService.delByPattern('user_account:*');
+    return this.userAccountRepository.delete(id);
   }
 }

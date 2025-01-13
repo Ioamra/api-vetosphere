@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { CommonController } from './common.controller';
 import { GeneratePostManCollectionService } from './services/generatePostmanCollection.service';
 import { MailService } from './services/mail.service';
 
+@Global()
 @Module({
   controllers: [CommonController],
   providers: [MailService, GeneratePostManCollectionService],

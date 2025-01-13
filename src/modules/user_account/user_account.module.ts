@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CommonModule } from 'src/common/common.module';
 import { AdminModule } from '../admin/admin.module';
 import { ClientModule } from '../client/client.module';
 import { VeterinarianModule } from '../veterinarian/veterinarian.module';
@@ -10,7 +9,7 @@ import { UserAccountController } from './user_account.controller';
 import { UserAccountService } from './user_account.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserAccount]), JwtModule, AdminModule, VeterinarianModule, ClientModule, CommonModule],
+  imports: [TypeOrmModule.forFeature([UserAccount]), JwtModule, AdminModule, VeterinarianModule, ClientModule],
   controllers: [UserAccountController],
   providers: [UserAccountService],
   exports: [UserAccountService],
