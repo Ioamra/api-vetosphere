@@ -25,22 +25,18 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
     ],
   };
 
-  async onApplicationBootstrap() {
+  async onApplicationBootstrap(): Promise<void> {
     this.generatePostManJsonCollectionFile(config().generatePostmanCollection);
   }
 
-  /**
-   * @description Analyse les fichiers .ts et récupère les informations nécessaires pour générer le fichier de collection Postman
-   * @param filePaths Chemins des fichiers .ts à analyser
-   * @returns Objet de la structure de Postman
-   */
+  // Analyse les fichiers .ts et récupère les informations nécessaires pour générer le fichier de collection Postman
   private generatePostManObject(filePaths: string[]): ObjectPostMan {
     this.getAllDto();
     this.getDescribeSpec();
     filePaths.forEach((filePath) => {
       const sourceCode = fs.readFileSync(filePath, 'utf-8');
       const sourceFile = ts.createSourceFile(filePath, sourceCode, ts.ScriptTarget.Latest, true);
-      let obj: FolderItemPM = { name: '', item: [], description: undefined };
+      const obj: FolderItemPM = { name: '', item: [], description: undefined };
 
       const extractInfosTSFile = (node: ts.Node): void => {
         if (ts.isClassDeclaration(node) && node.name) {
@@ -96,7 +92,7 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
 
               if (httpMethod) {
                 obj.name = className.replace('Controller', '');
-                let descriptonObject = this.getTypesBodies(this.arrayOfSpec, obj.name);
+                const descriptonObject = this.getTypesBodies(this.arrayOfSpec, obj.name);
                 if (descriptonObject) {
                   obj.description = 'Description des routes : \n' + descriptonObject;
                 }
@@ -202,13 +198,9 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
     });
     return this.collectionJson;
   }
-  /**
-   * @description Récupère tous les chemins des fichiers d'un répertoire avec une extension donnée
-   * @param extension Extension des fichiers à rechercher
-   * @param dirName Chemin du répertoire à scanner (par défaut, le répertoire src)
-   * @returns Tableau contenant les chemins des fichiers trouvés
-   */
-  private getAllFilesPathsWithExtension(extension: string, dir: string = path.join(__dirname, '..', '..', '..', 'src')): string[] {
+
+  // Récupère tous les chemins des fichiers d'un répertoire avec une extension donnée
+  private getAllFilesPathsWithExtension(extension: string, dir: string = path.join(__dirname, '..', '..', '..')): string[] {
     let results: string[] = [];
     const contentDirectory = fs.readdirSync(dir);
 
@@ -225,11 +217,8 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
 
     return results;
   }
-  /**
-   * @description Organise les items de l'objet de la structure de Postman
-   * @param object Objet de la structure de Postman à organiser
-   * @returns Objet de la structure de Postman organisé
-   */
+
+  // Organise les items de l'objet de la structure de Postman
   private organizationOfItems(object: ObjectPostMan): ObjectPostMan {
     object.item = object.item.filter((elem) => elem.name !== '' || elem.item.length > 0);
     object.item.sort((a, b) => {
@@ -246,16 +235,14 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
     return object;
   }
 
-  /**
-   * @description Génère le fichier de collection Postman
-   */
+  // Génère le fichier de collection Postman
   public generatePostManJsonCollectionFile(activate: boolean = false): void {
     if (activate) {
       const filePaths: string[] = this.getAllFilesPathsWithExtension('.controller.ts');
       const ObjectPostMan: ObjectPostMan = this.generatePostManObject(filePaths);
       const object = this.organizationOfItems(ObjectPostMan);
       const objectJson = JSON.stringify(object, null, 2);
-      const savePath = path.join(__dirname, '..', '..', '..', 'src', 'postman-collection', 'postmanCollection.json');
+      const savePath = path.join(__dirname, '..', '..', '..', 'postman-collection', 'postman-collection.json');
       fs.writeFile(savePath, objectJson, 'utf-8', (err) => {
         if (err) {
           Logger.error(err);
@@ -280,15 +267,13 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
     }
   }
 
-  /**
-   * @description Récupère les informations des fichiers .dto.ts
-   */
+  // Récupère les informations des fichiers .dto.ts
   private getAllDto(): void {
     this.arrayOfDto = [];
     this.getAllFilesPathsWithExtension('.dto.ts').forEach((filePath) => {
       const sourceCode = fs.readFileSync(filePath, 'utf-8');
       const sourceFile = ts.createSourceFile(filePath, sourceCode, ts.ScriptTarget.Latest, true);
-      let interfaceDto: any = {};
+      const interfaceDto: any = {};
       const extractInfosTSFile = (node: ts.Node): void => {
         if (ts.isClassDeclaration(node) && node.name) {
           const className = node.name.text;
@@ -318,24 +303,20 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
     });
   }
 
-  /**
-   * @description Récupère le contenu d'un type donné [ { type: value } ]
-   */
+  // Récupère le contenu d'un type donné [ { type: value } ]
   private getTypesBodies(array: any[], typeName: string): any | undefined {
     const foundObject = array.find((item) => item[typeName] !== undefined);
     return foundObject ? foundObject[typeName] : undefined;
   }
 
-  /**
-   * @description Récupère les informations des fichiers .controller.spec.ts
-   */
+  // Récupère les informations des fichiers .controller.spec.ts
   private getDescribeSpec(): void {
     this.getAllFilesPathsWithExtension('.controller.spec.ts').forEach((filePath) => {
       const sourceCode = fs.readFileSync(filePath, 'utf-8');
       const sourceFile = ts.createSourceFile(filePath, sourceCode, ts.ScriptTarget.Latest, true);
       let obj = { describe: '', it: '' };
       let result: string = '';
-      const findTestBlocks = (node: ts.Node) => {
+      const findTestBlocks = (node: ts.Node): void => {
         if (ts.isCallExpression(node)) {
           const expression = node.expression;
           if (ts.isIdentifier(expression)) {
@@ -356,7 +337,7 @@ export class GeneratePostManCollectionService implements OnApplicationBootstrap 
         ts.forEachChild(node, (childNode) => findTestBlocks(childNode));
       };
       findTestBlocks(sourceFile);
-      let resultObject = {};
+      const resultObject = {};
       const nameResultObject = result.split(' ')[2].replace('Controller', '');
       resultObject[nameResultObject] = result.replace(`La route ${nameResultObject}Controller should be defined. \n`, '');
       this.arrayOfSpec.push(resultObject);

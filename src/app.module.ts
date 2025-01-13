@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonModule } from './common/common.module';
+import { CustomCacheModule } from './common/custom-cache/custom-cache.module';
 import { IsConnectedGuard } from './common/guards/is-connected.guard';
 import { config } from './config/config';
 import { AddressModule } from './modules/address/address.module';
@@ -41,7 +42,7 @@ import { WorkingSectionModule } from './modules/working_section/working_section.
       isGlobal: true,
     }),
     CacheModule.register({
-      ttl: 5, // Le temps de vie en secondes
+      ttl: 60, // Le temps de vie en secondes
       max: 100, // Nombre maximum d'éléments en cache
     }),
     TypeOrmModule.forRootAsync({
@@ -72,6 +73,7 @@ import { WorkingSectionModule } from './modules/working_section/working_section.
       inject: [ConfigService],
     }),
     CommonModule,
+    CustomCacheModule,
     AuthModule,
     UserAccountModule,
     ClientModule,

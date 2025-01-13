@@ -1,6 +1,7 @@
-export interface ConfigProps {
+export type ConfigProps = {
   port: number;
   devMode: boolean;
+  debugMode: boolean;
   defaultClientPhoto: string;
   defaultVeterinarianPhoto: string;
   generatePostmanCollection: boolean;
@@ -12,47 +13,47 @@ export interface ConfigProps {
   cookie: CookieConfigProps;
   cors: CorsConfigProps;
   nodemailer: NodeMailerConfigProps;
-}
+};
 
-interface ApiConfigProps {
+type ApiConfigProps = {
   frontUrl: string;
   httpTimeout: number;
-}
+};
 
-interface DatabaseConfigProps {
+type DatabaseConfigProps = {
   host: string;
   port: number;
   user: string;
   password: string;
   databaseName: string;
-}
+};
 
-interface JwtConfigProps {
+type JwtConfigProps = {
   private: string;
   public: string;
   expiresIn: number;
   algorithm: 'RS256' | 'HS256';
-}
+};
 
-interface EncryptionConfigProps {
+type EncryptionConfigProps = {
   password: string;
   salt: string;
   iv: string;
-}
+};
 
-interface CookieConfigProps {
+type CookieConfigProps = {
   secret: string;
   secure: boolean;
   httpOnly: boolean;
   domain: string;
   path: string;
-}
+};
 
-interface CorsConfigProps {
+type CorsConfigProps = {
   origin: string;
-}
+};
 
-interface NodeMailerConfigProps {
+type NodeMailerConfigProps = {
   host: string;
   port: number;
   secure: boolean;
@@ -61,4 +62,4 @@ interface NodeMailerConfigProps {
     pass: string;
   };
   mailDev?: string;
-}
+};

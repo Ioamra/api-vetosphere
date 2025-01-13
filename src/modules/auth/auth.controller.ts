@@ -1,15 +1,18 @@
-import { Body, Controller, Get, Post, Request, Response, UseGuards } from '@nestjs/common';
+import { FileFieldsInterceptor, MemoryStorageFile, UploadedFiles } from '@blazity/nest-file-fastify';
+import { BadRequestException, Body, ConflictException, Controller, Get, Post, Request, Response, UseGuards, UseInterceptors } from '@nestjs/common';
 import { config } from 'src/config/config';
-import { CivilityEnum } from '../user_account/models/civility.enum';
+import { MailService } from '../../common/services/mail.service';
+import { RoleEnum } from '../user_account/models/role.enum';
 import { UserAccountService } from '../user_account/user_account.service';
 import { AuthService } from './auth.service';
+import { CreateAuthDto } from './dto/create-auth.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userAccountService: UserAccountService,
+    private mailService: MailService,
   ) {}
 
   @UseGuards(LocalAuthGuard)
@@ -28,44 +31,50 @@ export class AuthController {
   }
 
   @Post('register-client')
-  async registerClient(
-    @Body() user: { email: string; first_name: string; last_name: string; civility: CivilityEnum; password: string; photo?: string },
-  ) {
-    if (!user.photo) {
-      user.photo = config().defaultClientPhoto;
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'photo', maxCount: 1 }]))
+  async registerClient(@Body() user: CreateAuthDto, @UploadedFiles() files?: { photo?: MemoryStorageFile[] }): Promise<{ message: string }> {
+    if (!user.email || !user.first_name || !user.last_name || !user.civility || !user.password || !user.isDefaultPhoto) {
+      throw new BadRequestException('Missing required fields');
     }
-    return this.authService.registerClient(user.email, user.first_name, user.last_name, user.civility, user.password, user.photo);
-  }
-
-  @Post('register-veterinarian')
-  async registerVeterinarian(
-    @Body()
-    user: {
-      email: string;
-      first_name: string;
-      last_name: string;
-      civility: CivilityEnum;
-      password: string;
-      photo?: string;
-      num_rpps: string;
-    },
-  ) {
-    if (!user.photo) {
-      user.photo = config().defaultVeterinarianPhoto;
+    if (await this.userAccountService.findByEmail(user.email)) {
+      throw new ConflictException('Email already used');
     }
-    return this.authService.registerVeterinarian(
+    const { id_user_account, verification_code } = await this.authService.registerClient(
       user.email,
       user.first_name,
       user.last_name,
       user.civility,
       user.password,
-      user.photo,
+    );
+    if (user.isDefaultPhoto == 'false') await this.userAccountService.updatePhoto(id_user_account, RoleEnum['client'], files.photo[0]);
+    await this.mailService.confirmEmail(user.email, verification_code);
+    return { message: 'Client registered' };
+  }
+
+  @Post('register-veterinarian')
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'photo', maxCount: 1 }]))
+  async registerVeterinarian(@Body() user: CreateAuthDto, @UploadedFiles() files?: { photo?: MemoryStorageFile[] }): Promise<{ message: string }> {
+    if (!user.email || !user.first_name || !user.last_name || !user.civility || !user.password || !user.isDefaultPhoto || !user.num_rpps) {
+      throw new BadRequestException('Missing required fields');
+    }
+    if (await this.userAccountService.findByEmail(user.email)) {
+      throw new ConflictException('Email already used');
+    }
+    const { id_user_account, verification_code } = await this.authService.registerVeterinarian(
+      user.email,
+      user.first_name,
+      user.last_name,
+      user.civility,
+      user.password,
       user.num_rpps,
     );
+    if (user.isDefaultPhoto == 'false') await this.userAccountService.updatePhoto(id_user_account, RoleEnum['veterinarian'], files.photo[0]);
+    await this.mailService.confirmEmail(user.email, verification_code);
+    return { message: 'Veterinarian registered' };
   }
 
   @Get('confirm-code/:email/:verification_code')
-  async confirmCode(@Request() req) {
+  async confirmCode(@Request() req): Promise<boolean> {
     const { email, verification_code } = req.params;
     return await this.userAccountService.verificationCodeIsValid(email, verification_code);
   }

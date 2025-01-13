@@ -8,23 +8,23 @@ import { Client } from './entities/client.entity';
 export class ClientService {
   constructor(@InjectRepository(Client) private readonly clientRepository: Repository<Client>) {}
 
-  create(id_user_account: number) {
-    this.clientRepository.save({ id_user_account });
+  create(id_user_account: number): Promise<{ id_user_account: number } & Client> {
+    return this.clientRepository.save({ id_user_account });
   }
 
-  findAll() {
+  findAll(): string {
     return `This action returns all client`;
   }
 
-  findOne(id: number) {
+  findOne(id: number): string {
     return `This action returns a #${id} client`;
   }
 
-  update(id: number, updateClientDto: UpdateClientDto) {
+  update(id: number, updateClientDto: UpdateClientDto): string {
     return `This action updates a #${id} client`;
   }
 
-  remove(id: number) {
+  remove(id: number): string {
     return `This action removes a #${id} client`;
   }
 }
