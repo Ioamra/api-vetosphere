@@ -23,7 +23,6 @@ import { VeterinarianModule } from './modules/veterinarian/veterinarian.module';
     CacheModule.register({
       ttl: 60, // Le temps de vie en secondes
       max: 100, // Nombre maximum d'éléments en cache
-      isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
