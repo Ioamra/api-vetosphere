@@ -8,7 +8,10 @@ export class Photo {
   @Column('character varying')
   src: string;
 
+  @Column('int')
+  id_product: number;
+
   @ManyToOne(() => Product, (product) => product.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_product' })
-  product?: Product;
+  product: Product;
 }

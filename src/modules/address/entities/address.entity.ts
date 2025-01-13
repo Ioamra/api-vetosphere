@@ -1,16 +1,16 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserAccount } from '../../user_account/entities/user_account.entity';
 
-@Entity('adress', { schema: 'public' })
+@Entity('address', { schema: 'public' })
 export class Address {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column('character varying')
-  adress: string;
+  address: string;
 
   @Column('character varying')
-  adress_complement: string;
+  address_complement: string;
 
   @Column('character varying')
   city: string;
@@ -18,7 +18,10 @@ export class Address {
   @Column('character varying')
   postal_code: string;
 
+  @Column('int')
+  id_user_account: number;
+
   @ManyToOne(() => UserAccount, (userAccount) => userAccount.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_user_account' })
-  user_account?: UserAccount;
+  user_account: UserAccount;
 }

@@ -11,13 +11,13 @@ export class Favorite {
   id_blog: number;
 
   @Column('timestamp', { default: 'NOW()' })
-  creation_date: Date;
+  creation_date: string;
 
   @ManyToOne(() => UserAccount, (userAccount) => userAccount.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_user_account' })
-  userAccount?: UserAccount;
+  userAccount: UserAccount;
 
   @ManyToOne(() => Blog, (blog) => blog.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_blog' })
-  blog?: Blog;
+  blog: Blog;
 }

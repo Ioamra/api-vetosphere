@@ -13,7 +13,10 @@ export class DeliveryStage {
   @Column('timestamp', { default: () => 'NOW()' })
   creation_date: Date;
 
+  @Column('int')
+  id_cart: number;
+
   @ManyToOne(() => Cart, (cart) => cart.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_cart' })
-  cart?: Cart;
+  cart: Cart;
 }

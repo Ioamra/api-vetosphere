@@ -21,7 +21,10 @@ export class Blog {
   @Column('timestamp', { default: 'NOW()', onUpdate: 'NOW()' })
   update_date: string;
 
+  @Column('int')
+  id_user_account: number;
+
   @ManyToOne(() => UserAccount, (userAccount) => userAccount.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_user_account' })
-  userAccount?: UserAccount;
+  userAccount: UserAccount;
 }

@@ -9,17 +9,23 @@ export class Product {
   @Column('character varying')
   name: string;
 
-  @Column('numeric', { scale: 2 })
+  @Column('numeric', { precision: 5, scale: 2 })
   price: number;
 
   @Column('character varying')
   description: string;
 
+  @Column('int')
+  id_specie: number;
+
+  @Column('int')
+  id_category: number;
+
   @ManyToOne(() => Specie, (specie) => specie.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_specie' })
-  specie?: Specie;
+  specie: Specie;
 
   @ManyToOne(() => category, (category) => category.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_category' })
-  category?: category;
+  category: category;
 }

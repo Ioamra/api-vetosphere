@@ -1,4 +1,4 @@
-export enum WorkingDayEnum {
+export enum DayEnum {
   'lundi' = 'lundi',
   'mardi' = 'mardi',
   'mercredi' = 'mercredi',

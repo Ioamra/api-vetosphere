@@ -6,33 +6,32 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonModule } from './common/common.module';
 import { IsConnectedGuard } from './common/guards/is-connected.guard';
 import { config } from './config/config';
+import { AddressModule } from './modules/address/address.module';
 import { AdminModule } from './modules/admin/admin.module';
-import { AuthModule } from './modules/auth/auth.module';
-import { ClientModule } from './modules/client/client.module';
-import { UserAccountModule } from './modules/user_account/user_account.module';
-import { VeterinarianModule } from './modules/veterinarian/veterinarian.module';
 import { AnimalModule } from './modules/animal/animal.module';
-import { DocumentModule } from './modules/document/document.module';
-import { SpecieModule } from './modules/specie/specie.module';
-import { RaceModule } from './modules/race/race.module';
-import { VaccineModule } from './modules/vaccine/vaccine.module';
-import { SpecieHasVaccineModule } from './modules/specie_has_vaccine/specie_has_vaccine.module';
-import { VaccinationModule } from './modules/vaccination/vaccination.module';
-import { EventTypeModule } from './modules/event_type/event_type.module';
-import { EventModule } from './modules/event/event.module';
 import { AnimalHistoryModule } from './modules/animal_history/animal_history.module';
-import { WorkingSectionModule } from './modules/working_section/working_section.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { BlogModule } from './modules/blog/blog.module';
 import { BlogMessageModule } from './modules/blog_message/blog_message.module';
-import { AddressModule } from './modules/address/address.module';
-import { ProductModule } from './modules/product/product.module';
-import { CategoryModule } from './modules/category/category.module';
-import { PhotoModule } from './modules/photo/photo.module';
 import { CartModule } from './modules/cart/cart.module';
-import { DeliveryStageModule } from './modules/delivery_stage/delivery_stage.module';
 import { CartHasProductModule } from './modules/cart_has_product/cart_has_product.module';
+import { CategoryModule } from './modules/category/category.module';
+import { ClientModule } from './modules/client/client.module';
+import { DeliveryStageModule } from './modules/delivery_stage/delivery_stage.module';
+import { DocumentModule } from './modules/document/document.module';
+import { EventModule } from './modules/event/event.module';
+import { EventTypeModule } from './modules/event_type/event_type.module';
 import { FavoriteModule } from './modules/favorite/favorite.module';
 import { NoteModule } from './modules/note/note.module';
+import { PhotoModule } from './modules/photo/photo.module';
+import { ProductModule } from './modules/product/product.module';
+import { RaceModule } from './modules/race/race.module';
+import { SpecieModule } from './modules/specie/specie.module';
+import { UserAccountModule } from './modules/user_account/user_account.module';
+import { VaccinationModule } from './modules/vaccination/vaccination.module';
+import { VaccineModule } from './modules/vaccine/vaccine.module';
+import { VeterinarianModule } from './modules/veterinarian/veterinarian.module';
+import { WorkingSectionModule } from './modules/working_section/working_section.module';
 
 @Module({
   imports: [
@@ -83,7 +82,6 @@ import { NoteModule } from './modules/note/note.module';
     SpecieModule,
     RaceModule,
     VaccineModule,
-    SpecieHasVaccineModule,
     VaccinationModule,
     EventTypeModule,
     EventModule,

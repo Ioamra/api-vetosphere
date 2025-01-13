@@ -12,11 +12,17 @@ export class Note {
   @Column('numeric')
   note_number: number;
 
+  @Column('int')
+  id_client: number;
+
+  @Column('int')
+  id_product: number;
+
   @ManyToOne(() => Client, (client) => client.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_client' })
-  client?: Client;
+  client: Client;
 
   @ManyToOne(() => Product, (product) => product.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_product' })
-  product?: Product;
+  product: Product;
 }

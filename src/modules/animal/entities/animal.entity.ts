@@ -1,6 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Race } from '../../race/entities/race.entity';
-import { CivilityEnum } from '../../user_account/models/civility.enum';
 import { GenderEnum } from '../models/gender.enum';
 import { Client } from './../../client/entities/client.entity';
 
@@ -15,14 +14,14 @@ export class Animal {
   @Column('timestamp')
   birth_date: string;
 
-  @Column('enum', { enum: CivilityEnum })
+  @Column('enum', { enum: GenderEnum })
   gender: GenderEnum;
 
   @Column('character varying')
   num_chip: string;
 
   @Column('character varying')
-  tatto: string;
+  tattoo: string;
 
   @Column('character varying')
   photo: string;
@@ -30,11 +29,14 @@ export class Animal {
   @Column('int')
   id_client: number;
 
+  @Column('int')
+  id_race: number;
+
   @ManyToOne(() => Client, (client) => client.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_client' })
-  client?: Client;
+  client: Client;
 
   @ManyToOne(() => Race, (race) => race.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_race' })
-  race?: Race;
+  race: Race;
 }
