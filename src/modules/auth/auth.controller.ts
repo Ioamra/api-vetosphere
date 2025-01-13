@@ -1,5 +1,5 @@
 import { FileFieldsInterceptor, MemoryStorageFile, UploadedFiles } from '@blazity/nest-file-fastify';
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Request, Response, UseGuards, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, ConflictException, Controller, Get, Post, Request, Response, UseGuards, UseInterceptors } from '@nestjs/common';
 import { config } from 'src/config/config';
 import { MailService } from '../../common/services/mail.service';
 import { RoleEnum } from '../user_account/models/role.enum';
@@ -34,10 +34,10 @@ export class AuthController {
   @UseInterceptors(FileFieldsInterceptor([{ name: 'photo', maxCount: 1 }]))
   async registerClient(@Body() user: CreateAuthDto, @UploadedFiles() files?: { photo?: MemoryStorageFile[] }): Promise<{ message: string }> {
     if (!user.email || !user.first_name || !user.last_name || !user.civility || !user.password || !user.isDefaultPhoto) {
-      throw new HttpException('Missing required fields', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException('Missing required fields');
     }
     if (await this.userAccountService.findByEmail(user.email)) {
-      throw new HttpException('Email already used', HttpStatus.CONFLICT);
+      throw new ConflictException('Email already used');
     }
     const { id_user_account, verification_code } = await this.authService.registerClient(
       user.email,
@@ -55,10 +55,10 @@ export class AuthController {
   @UseInterceptors(FileFieldsInterceptor([{ name: 'photo', maxCount: 1 }]))
   async registerVeterinarian(@Body() user: CreateAuthDto, @UploadedFiles() files?: { photo?: MemoryStorageFile[] }): Promise<{ message: string }> {
     if (!user.email || !user.first_name || !user.last_name || !user.civility || !user.password || !user.isDefaultPhoto || !user.num_rpps) {
-      throw new HttpException('Missing required fields', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException('Missing required fields');
     }
     if (await this.userAccountService.findByEmail(user.email)) {
-      throw new HttpException('Email already used', HttpStatus.CONFLICT);
+      throw new ConflictException('Email already used');
     }
     const { id_user_account, verification_code } = await this.authService.registerVeterinarian(
       user.email,
