@@ -14,15 +14,15 @@ export class Vaccination {
   @Column('timestamp')
   rappel_date: string;
 
-  @ManyToOne(() => Vaccine, (Vaccine) => Vaccine.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => Vaccine, (vaccine) => vaccine.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_vaccine' })
   vaccine?: Vaccine;
 
-  @ManyToOne(() => Animal, (Animal) => Animal.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => Animal, (animal) => animal.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_animal' })
   animal?: Animal;
 
-  @ManyToOne(() => Veterinarian, (Veterinarian) => Veterinarian.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => Veterinarian, (veterinarian) => veterinarian.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_veterinarian' })
   veterinarian?: Veterinarian;
 }

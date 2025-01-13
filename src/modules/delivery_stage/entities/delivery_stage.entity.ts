@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Cart } from '../../cart/entities/cart.entity';
-import { DeliveryEnum } from './models/delivery.enum';
+import { DeliveryEnum } from '../models/delivery.enum';
 
 @Entity('delivery_stage', { schema: 'public' })
 export class DeliveryStage {

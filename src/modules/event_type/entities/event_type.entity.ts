@@ -15,7 +15,7 @@ export class EventType {
   @Column('int')
   default_duration: number;
 
-  @ManyToOne(() => UserAccount, (UserAccount) => UserAccount.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => UserAccount, (userAccount) => userAccount.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_user_account' })
-  UserAccount?: UserAccount;
+  userAccount?: UserAccount;
 }

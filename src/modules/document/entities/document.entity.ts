@@ -12,7 +12,7 @@ export class Document {
   @Column('timestamp')
   creation_date: string;
 
-  @ManyToOne(() => Animal, (Client) => Client.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => Animal, (animal) => animal.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_animal' })
-  userAccount?: Animal;
+  animal?: Animal;
 }

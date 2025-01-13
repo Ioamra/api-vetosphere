@@ -10,6 +10,9 @@ export class CartHasProduct {
   @PrimaryColumn()
   id_product: number;
 
+  @Column('integer')
+  quantity: number;
+
   @ManyToOne(() => Cart, (cart) => cart.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_cart' })
   cart: Cart;
@@ -17,7 +20,4 @@ export class CartHasProduct {
   @ManyToOne(() => Product, (product) => product.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_product' })
   product: Product;
-
-  @Column('integer')
-  quantity: number;
 }

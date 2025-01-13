@@ -4,15 +4,16 @@ import { Animal } from '../../animal/entities/animal.entity';
 @Entity('animal_history', { schema: 'public' })
 export class AnimalHistory {
   @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('float')
+  @Column('numeric', { precision: 5, scale: 2 })
   weight: number;
 
   @Column('timestamp', { default: () => 'NOW()' })
   creation_date: Date;
 
-  @ManyToOne(() => Animal, (Animal) => Animal.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => Animal, (animal) => animal.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_animal' })
   animal?: Animal;
 }

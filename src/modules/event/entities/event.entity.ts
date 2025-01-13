@@ -20,15 +20,15 @@ export class Event {
   @Column('boolean')
   is_delete: boolean;
 
-  @ManyToOne(() => EventType, (EventType) => EventType.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => EventType, (eventType) => eventType.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_event_type' })
   eventType?: EventType;
 
-  @ManyToOne(() => Animal, (Animal) => Animal.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => Animal, (animal) => animal.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_animal' })
   animal?: Animal;
 
-  @ManyToOne(() => Veterinarian, (Veterinarian) => Veterinarian.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => Veterinarian, (veterinarian) => veterinarian.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_veterinarian' })
   veterinarian?: Veterinarian;
 }

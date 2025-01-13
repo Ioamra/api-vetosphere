@@ -1,8 +1,8 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Client } from '../../client/entities/client.entity';
 import { Race } from '../../race/entities/race.entity';
 import { CivilityEnum } from '../../user_account/models/civility.enum';
 import { GenderEnum } from '../models/gender.enum';
+import { Client } from './../../client/entities/client.entity';
 
 @Entity('animal', { schema: 'public' })
 export class Animal {
@@ -30,11 +30,11 @@ export class Animal {
   @Column('int')
   id_client: number;
 
-  @ManyToOne(() => Client, (Client) => Client.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => Client, (client) => client.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_client' })
-  userAccount?: Client;
+  client?: Client;
 
-  @ManyToOne(() => Race, (Race) => Race.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => Race, (race) => race.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_race' })
-  Race?: Race;
+  race?: Race;
 }

@@ -9,7 +9,7 @@ export class Race {
   @Column('character varying', { unique: true })
   name: string;
 
-  @ManyToOne(() => Specie, (Specie) => Specie.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @ManyToOne(() => Specie, (specie) => specie.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'id_specie' })
-  Specie?: Specie;
+  specie?: Specie;
 }
