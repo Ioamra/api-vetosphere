@@ -50,6 +50,7 @@ export class AuthService {
 
   async registerClient(
     email: string,
+    phone: string,
     first_name: string,
     last_name: string,
     civility: CivilityEnum,
@@ -59,6 +60,7 @@ export class AuthService {
     const verification_code = Math.floor(100000 + Math.random() * 900000).toString();
     const client = await this.userAccountService.create({
       email,
+      phone,
       password: hashedPassword,
       first_name,
       last_name,
@@ -72,6 +74,7 @@ export class AuthService {
 
   async registerVeterinarian(
     email: string,
+    phone: string,
     first_name: string,
     last_name: string,
     civility: CivilityEnum,
@@ -83,6 +86,7 @@ export class AuthService {
 
     const veterinarian = await this.userAccountService.create({
       email,
+      phone,
       password: hashedPassword,
       first_name,
       last_name,

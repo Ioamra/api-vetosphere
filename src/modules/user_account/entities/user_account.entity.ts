@@ -12,6 +12,9 @@ export class UserAccount {
   @Column('character varying', { unique: true })
   email: string;
 
+  @Column('character varying', { unique: true })
+  phone: string;
+
   @Column('character varying')
   first_name: string;
 

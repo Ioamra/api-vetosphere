@@ -1,0 +1,24 @@
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { UserAccount } from '../../user_account/entities/user_account.entity';
+
+@Entity('event_type', { schema: 'public' })
+export class EventType {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column('character varying')
+  name: string;
+
+  @Column('character varying')
+  color: string;
+
+  @Column('int')
+  default_duration: number;
+
+  @Column('int')
+  id_user_account: number;
+
+  @ManyToOne(() => UserAccount, (userAccount) => userAccount.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @JoinColumn({ name: 'id_user_account' })
+  userAccount: UserAccount;
+}

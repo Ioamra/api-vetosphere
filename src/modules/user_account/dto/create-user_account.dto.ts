@@ -9,6 +9,10 @@ export class CreateUserAccountDto {
 
   @IsString()
   @IsNotEmpty()
+  phone: string;
+
+  @IsString()
+  @IsNotEmpty()
   @Length(60)
   password: string;
 
