@@ -32,6 +32,7 @@ import { CartModule } from './modules/cart/cart.module';
 import { DeliveryStageModule } from './modules/delivery_stage/delivery_stage.module';
 import { CartHasProductModule } from './modules/cart_has_product/cart_has_product.module';
 import { FavoriteModule } from './modules/favorite/favorite.module';
+import { NoteModule } from './modules/note/note.module';
 
 @Module({
   imports: [
@@ -98,6 +99,7 @@ import { FavoriteModule } from './modules/favorite/favorite.module';
     DeliveryStageModule,
     CartHasProductModule,
     FavoriteModule,
+    NoteModule,
   ],
   providers: [
     {

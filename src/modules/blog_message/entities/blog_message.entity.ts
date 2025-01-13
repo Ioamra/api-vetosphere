@@ -20,12 +20,13 @@ export class BlogMessage {
   @ManyToMany(() => UserAccount, (userAccount) => userAccount.id, { onUpdate: 'CASCADE', onDelete: 'CASCADE' })
   @JoinTable({
     name: 'user_account_has_blog_message',
+
     joinColumn: {
-      name: 'id_user_account',
+      name: 'id_blog_message',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-      name: 'id_blog_message',
+      name: 'id_user_account',
       referencedColumnName: 'id',
     },
   })
